@@ -1,0 +1,14 @@
+TAG_CATEGORY_LENGTH = 1  # 长度
+TAG_CATEGORY_SOCKET = 2  # 接口
+
+TAG_CATEGORY_LENGTH:
+    {
+        length: xxx
+    }
+
+TAG_CATEGORY_SOCKET:
+
+
+
+
+Stock:
