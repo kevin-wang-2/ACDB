@@ -32,6 +32,13 @@ def search_tag_by_property(category, **props):
     return conn.find("tag", cc_props)
 
 
+def search_tag_by_id(id):
+    _id = bson.ObjectId(id)
+    return conn.find("tag", {
+        "_id": _id
+    }).next()
+
+
 def list_tag():
     return conn.find("tag", {})
 

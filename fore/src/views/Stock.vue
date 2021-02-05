@@ -50,8 +50,9 @@ import { Option } from "@/types/form";
         if (result.data.success) {
           result.data.data.forEach((item: TagWithId) => {
             app.tags.push({
-              key: item.name,
-              value: item._id
+              key: item._id,
+              value: item._id,
+              label: item.name
             });
           });
           app.loading = false;

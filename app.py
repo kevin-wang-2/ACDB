@@ -110,6 +110,14 @@ def list_tag():
     return {"success": True, "data": [utils.make_serializable(tag) for tag in tags]}
 
 
+@app.route("/api/tag/<id>", methods=["GET"])
+def find_tag(id):
+    try:
+        return {"success": True, "data": utils.make_serializable(model.tag.search_tag_by_id(id))}
+    except:
+        return {"success": False, "error": -1}
+
+
 @app.route("/api/tag", methods=["POST"])
 @auth.validate(0, False)
 @model.tag_model.validate_tag_request
@@ -131,9 +139,17 @@ def del_tag(qs_arguments):
 # Stock
 
 @app.route("/api/stock", methods=["POST"])
-def add_stock():
-    print(request.form.to_dict())
+@auth.validate(0, False)
+@model.stock.validate_stock_request
+def add_stock(name, slots, rent):
+    model.stock.create_stock(name, slots, rent)
     return {"success": True}
+
+
+@app.route("/api/stock", methods=["GET"])
+def list_stock():
+    stock = model.stock.list_stock()
+    return {"success": True, "data": [utils.make_serializable(tag) for tag in stock]}
 
 
 # Static
