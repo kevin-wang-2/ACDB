@@ -25,3 +25,7 @@ export type SubmitTagModel = MergeOptional<
 >;
 
 export type PropertyType = DummyProperty | LengthProperty | SocketProperty;
+
+export interface TagWithId extends TagModel<PropertyType> {
+  _id: string
+}

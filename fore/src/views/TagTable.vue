@@ -171,7 +171,8 @@ const property_input_fields: PropertyInputFieldTree = {
 @Component({
   beforeRouteEnter(from, to, next) {
     next(vm => {
-      const app: TagTable = vm as TagTable;
+      const app = vm as TagTable;
+      app.loading = true;
       axios.get("/api/tag").then(result => {
         if (result.data.success) {
           app.tags = result.data.data;

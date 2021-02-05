@@ -6,7 +6,7 @@
     ></Login>
     <el-container class="dialog-main" v-else>
       <el-header>
-        <el-menu :default-active="'1'" mode="horizontal">
+        <el-menu :default-active="uconfig.navigator[$route.fullPath]" mode="horizontal">
           <el-menu-item index="1" @click="triggerRoute('/')">仓储</el-menu-item>
           <el-menu-item index="2" @click="triggerRoute('storage')"
             >库存列表</el-menu-item
@@ -28,7 +28,7 @@
             <el-menu-item index="3-3" @click="triggerRoute('tag')"
               >标签编辑</el-menu-item
             >
-            <el-menu-item index="3-3" @click="triggerRoute('contact')"
+            <el-menu-item index="3-4" @click="triggerRoute('contact')"
               >AC通讯录</el-menu-item
             >
           </el-submenu>
@@ -59,6 +59,7 @@ import {} from "vue-router";
 import Component from "vue-class-component";
 
 import Login from "@/components/Login.vue";
+import config from "@/config/config";
 
 @Component({
   components: {
@@ -69,6 +70,7 @@ export default class App extends Vue {
   name = "app";
   search: string;
   searchTriggered: boolean;
+  uconfig = config;
   constructor() {
     super();
     this.search = "";

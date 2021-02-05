@@ -12,6 +12,14 @@ export default {
         socket: "接口"
       }
     }
+  },
+  navigator: {
+    "/": "1",
+    "/storage": "2",
+    "/stock": "3-2",
+    "/tag": "3-3",
+    "/contact": "3-4",
+    "/search": "4"
   }
 };
 //# sourceMappingURL=config.js.map

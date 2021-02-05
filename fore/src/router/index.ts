@@ -16,6 +16,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("@/views/StorageTable.vue")
   },
   {
+    path: "/stock",
+    name: "Stock",
+    component: () => import("@/views/Stock.vue")
+  },
+  {
     path: "/tag",
     name: "Tag",
     component: () => import("@/views/TagTable.vue")
