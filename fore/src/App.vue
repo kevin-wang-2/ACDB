@@ -6,7 +6,10 @@
     ></Login>
     <el-container class="dialog-main" v-else>
       <el-header>
-        <el-menu :default-active="uconfig.navigator[$route.fullPath]" mode="horizontal">
+        <el-menu
+          :default-active="uconfig.navigator[$route.fullPath]"
+          mode="horizontal"
+        >
           <el-menu-item index="1" @click="triggerRoute('/')">仓储</el-menu-item>
           <el-menu-item index="2" @click="triggerRoute('storage')"
             >库存列表</el-menu-item
@@ -22,13 +25,22 @@
             <el-menu-item index="3-1" @click="triggerLogin()" v-else
               >登录</el-menu-item
             >
-            <el-menu-item index="3-2" @click="triggerRoute('stock')"
+            <el-menu-item
+              index="3-2"
+              @click="triggerRoute('stock')"
+              v-if="$store.state.login.level >= 0 && !$store.state.login.tour"
               >进货</el-menu-item
             >
-            <el-menu-item index="3-3" @click="triggerRoute('tag')"
+            <el-menu-item
+              index="3-3"
+              @click="triggerRoute('tag')"
+              v-if="$store.state.login.level >= 0 && !$store.state.login.tour"
               >标签编辑</el-menu-item
             >
-            <el-menu-item index="3-4" @click="triggerRoute('contact')"
+            <el-menu-item
+              index="3-4"
+              @click="triggerRoute('contact')"
+              v-if="$store.state.login.level >= 0 && !$store.state.login.tour"
               >AC通讯录</el-menu-item
             >
           </el-submenu>

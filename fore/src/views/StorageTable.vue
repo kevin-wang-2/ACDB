@@ -9,7 +9,7 @@
       v-loading="loading"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="name" label="名称" width="100"></el-table-column>
+      <el-table-column prop="name" label="名称" width="200"></el-table-column>
       <el-table-column prop="slots" label="标签">
         <template slot-scope="scope">
           <div v-for="tags in scope.row.slots" :key="JSON.stringify(tags)">
