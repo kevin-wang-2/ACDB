@@ -5,11 +5,13 @@ export default {
       category_name: {
         "0": "属性",
         "1": "长度",
-        "2": "接口"
+        "2": "接口",
+        "3": "数量"
       },
       property_name: {
         length: "长度",
-        socket: "接口"
+        socket: "接口",
+        amount: "数量"
       }
     }
   },

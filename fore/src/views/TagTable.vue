@@ -165,6 +165,23 @@ const property_input_fields: PropertyInputFieldTree = {
         { key: "NET", value: 10, label: "网线" }
       ]
     }
+  ],
+  "3": [
+    {
+      key: "amount",
+      type: "el-input",
+      label: "数量",
+      rules: [
+        { required: true, message: "数量不能为空" },
+        {
+          validator(rule, value: string, cb) {
+            if (value === "") cb(new Error("数量不能为空"));
+            else if (isNaN(parseInt(value))) cb(new Error("数量必须是整数"));
+            else cb();
+          }
+        }
+      ]
+    }
   ]
 };
 
