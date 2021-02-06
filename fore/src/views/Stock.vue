@@ -131,7 +131,8 @@ export default class Stock extends Vue {
     slot: [
       {
         validator: (rules, value, cb) => {
-          for (let i = 0; i < this.slotCnt; i++) {
+          console.log(slotCnt, this.form.slots);
+          for (let i = 0; i < slotCnt; i++) {
             if (this.form.slots[i].length === 0) {
               cb(new Error("不能有空插槽"));
               return;
@@ -156,9 +157,13 @@ export default class Stock extends Vue {
     this.loaded = false;
   }
   handleMaxChange() {
+    // 保证一致性以免翻车
     if (this.form.slots.length > this.slotCnt) {
       this.form.slots.slice(0, this.slotCnt);
-    }
+    } else
+      while (this.form.slots.length < this.slotCnt) {
+        this.form.slots.push([]);
+      }
     if (this.curSlot > this.slotCnt) this.curSlot = this.slotCnt;
     slotCnt = this.slotCnt;
   }
