@@ -44,6 +44,7 @@ import axios from "axios";
     next(vm => {
       const app = vm as StorageTable;
       app.loading = true;
+      app.loaded = true;
       axios.get("/api/stock").then(async result => {
         if (result.data.success) {
           const storage: StockModel[] = result.data.data;
@@ -59,17 +60,40 @@ import axios from "axios";
         }
       });
     });
+  },
+  mounted() {
+    const app = this as StorageTable;
+    if (!app.loaded) {
+      app.loading = true;
+      app.loaded = true;
+      axios.get("/api/stock").then(async result => {
+        if (result.data.success) {
+          const storage: StockModel[] = result.data.data;
+          for (let i = 0; i < storage.length; i++)
+            await forEachSlots(storage[i], async (item: string) => {
+              const tag = await axios.get("/api/tag/" + item);
+              return tag.data.data.name;
+            });
+          app.storage = storage;
+          app.loading = false;
+        } else {
+          app.$message.error("加载失败");
+        }
+      });
+    }
   }
 })
 export default class StorageTable extends Vue {
   name = "StorageTable";
   loading: boolean;
+  loaded: boolean;
   storage: StockModel[];
   selectedItems: Array<StockModel> = [];
   constructor() {
     super();
     this.storage = [];
     this.loading = true;
+    this.loaded = false;
   }
 
   handleSelectionChange(val: StockModel[]) {
