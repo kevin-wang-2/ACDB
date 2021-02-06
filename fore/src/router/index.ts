@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import HelloWorld from "@/views/HelloWorld.vue";
+import Search from "@/views/Search.vue"
 
 import store from "@/store";
 import config from "@/config/config";
@@ -31,7 +32,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/search",
     name: "Search",
-    component: () => import("@/views/Search.vue")
+    component: Search
   }
 ];
 
