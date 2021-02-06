@@ -23,7 +23,7 @@
               :min="1"
               @change="handleMaxChange()"
             ></el-input-number>
-            <el-button @click="deleteSlot()" v-if="slotCnt > 1"
+            <el-button @click="deleteCurSlot()" v-if="slotCnt > 1"
               >删除插槽</el-button
             >
           </el-form-item>
@@ -46,14 +46,47 @@
         </el-form>
       </el-aside>
       <el-main class="no-header border-left">
-        <el-collapse>
-          <el-collapse-item
-            v-for="cnt in slotCnt"
-            :key="cnt"
-            :title="'插槽' + cnt"
-          >
-            <el-row v-for="item in form.slots[cnt - 1]" :key="item">
-              {{ tags.find(tag => tag.key === item).label }}
+        <el-collapse v-model="activeSlot">
+          <el-collapse-item v-for="cnt in slotCnt" :key="cnt" :name="cnt">
+            <template slot="title"> 插槽{{ cnt }} </template>
+            <el-row v-for="(item, index) in form.slots[cnt - 1]" :key="item">
+              <span style="min-width: 5rem;display: inline-block;">
+                {{ tags.find(tag => tag.key === item).label }}
+              </span>
+              <el-button
+                size="mini"
+                @click="moveUpItem(cnt - 1, index)"
+                v-if="index !== 0"
+                icon="el-icon-arrow-up"
+              ></el-button>
+              <el-button
+                size="mini"
+                @click="moveDownItem(cnt - 1, index)"
+                v-if="index !== form.slots[cnt - 1].length - 1"
+                icon="el-icon-arrow-down"
+              ></el-button>
+            </el-row>
+            <el-row v-if="slotCnt > 1" style="margin-top: 0.2rem">
+              <el-button
+                size="small"
+                @click="moveUp(cnt - 1)"
+                v-if="cnt !== 1"
+                icon="el-icon-arrow-up"
+                >上移</el-button
+              >
+              <el-button
+                size="small"
+                @click="moveDown(cnt - 1)"
+                v-if="cnt !== slotCnt"
+                icon="el-icon-arrow-down"
+                >下移</el-button
+              >
+              <el-button size="small" @click="curSlot = cnt"
+                >选择该插槽</el-button
+              >
+              <el-button size="small" @click="deleteSlot(cnt - 1)"
+                >删除插槽</el-button
+              >
             </el-row>
           </el-collapse-item>
         </el-collapse>
@@ -129,6 +162,7 @@ export default class Stock extends Vue {
   tags: Option[];
   loading: boolean;
   loaded: boolean;
+  activeSlot: number[];
   validator: FormValidationTree = {
     name: [{ required: true, message: "名称不能为空" }],
     slot: [
@@ -157,26 +191,74 @@ export default class Stock extends Vue {
     this.tags = [];
     this.loading = true;
     this.loaded = false;
+    this.activeSlot = [1];
   }
   handleMaxChange() {
     // 保证一致性以免翻车
     if (this.form.slots.length > this.slotCnt) {
-      this.form.slots.slice(0, this.slotCnt);
+      this.form.slots = this.form.slots.slice(0, this.slotCnt);
     } else
       while (this.form.slots.length < this.slotCnt) {
         this.form.slots.push([]);
+        this.activeSlot.push(this.form.slots.length);
       }
     if (this.curSlot > this.slotCnt) this.curSlot = this.slotCnt;
+    this.activeSlot = this.activeSlot.filter(slot => slot <= this.slotCnt);
     slotCnt = this.slotCnt;
   }
-  deleteSlot() {
+  deleteCurSlot() {
     this.form.slots.splice(this.curSlot - 1, 1);
     this.slotCnt--;
     slotCnt--;
     if (this.curSlot > this.slotCnt) this.curSlot = this.slotCnt;
   }
+  deleteSlot(slot: number) {
+    this.form.slots.splice(slot, 1);
+    this.slotCnt--;
+    slotCnt--;
+    if (this.curSlot > this.slotCnt) this.curSlot = this.slotCnt;
+  }
+  moveUpItem(slot: number, index: number) {
+    const temp = this.form.slots[slot][index];
+    this.form.slots[slot][index] = this.form.slots[slot][index - 1];
+    this.form.slots[slot][index - 1] = temp;
+    this.$forceUpdate();
+  }
+  moveDownItem(slot: number, index: number) {
+    const temp = this.form.slots[slot][index];
+    this.form.slots[slot][index] = this.form.slots[slot][index + 1];
+    this.form.slots[slot][index + 1] = temp;
+    this.$forceUpdate();
+  }
+  moveUp(slot: number) {
+    const temp = this.form.slots[slot];
+    this.form.slots[slot] = this.form.slots[slot - 1];
+    this.form.slots[slot - 1] = temp;
+    this.$forceUpdate();
+  }
+  moveDown(slot: number) {
+    const temp = this.form.slots[slot];
+    this.form.slots[slot] = this.form.slots[slot + 1];
+    this.form.slots[slot + 1] = temp;
+    this.$forceUpdate();
+  }
   async onSubmit() {
-    axios.post("/api/stock", qs.stringify(this.form));
+    axios.post("/api/stock", qs.stringify(this.form)).then(result => {
+      if (result.data.success) {
+        this.form = {
+          name: "",
+          slots: [[]],
+          rent: true
+        };
+        this.$message.success("进货成功");
+      } else {
+        if (result.data.error == -401) {
+          this.$message.error("权限不足");
+        } else {
+          this.$message.error("添加失败");
+        }
+      }
+    });
   }
 }
 </script>
