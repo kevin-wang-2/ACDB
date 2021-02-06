@@ -3,6 +3,7 @@ import model
 
 import model.tag_model.length as length
 import model.tag_model.socket as sock
+import model.tag_model.amount as amount
 import utils
 
 GENERATOR_VEC_TABLE = {
@@ -50,6 +51,7 @@ def add_generator(property_type, module):
 
 add_generator(model.tag.TAG_CATEGORY_LENGTH, length)
 add_generator(model.tag.TAG_CATEGORY_SOCKET, sock)
+add_generator(model.tag.TAG_CATEGORY_AMOUNT, amount)
 
 
 def validate_tag_request(func):

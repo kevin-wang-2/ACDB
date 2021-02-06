@@ -1,12 +1,18 @@
 TAG_CATEGORY_LENGTH = 1  # 长度
 TAG_CATEGORY_SOCKET = 2  # 接口
+TAG_CATEGORY_LENGTH = 3  # 数量
 
 TAG_CATEGORY_LENGTH:
     {
-        length: xxx
+        length: number
     }
 
 TAG_CATEGORY_SOCKET:
+
+TAG_CATEGORY_AMOUNT:
+    {
+        amount: int
+    }
 
 
 

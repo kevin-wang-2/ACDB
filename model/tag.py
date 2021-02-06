@@ -6,7 +6,7 @@ import bson
 TAG_CATEGORY_ATTRIBUTE = 0  # 属性
 TAG_CATEGORY_LENGTH = 1  # 长度
 TAG_CATEGORY_SOCKET = 2  # 接口
-TAG_CATEGORY_POSITION = 0xff  # 位置
+TAG_CATEGORY_AMOUNT = 3  # 数量
 
 
 def create_tag(name, category, **props):
