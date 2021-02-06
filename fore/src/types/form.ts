@@ -8,6 +8,10 @@ export interface FormValidator {
 
 export type FormValidatorGroup = FormValidator[];
 
+export interface FormValidationTree {
+    [key: string]: FormValidatorGroup
+}
+
 export interface Option {
     key: string;
     value: string | number;
