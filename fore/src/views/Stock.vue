@@ -23,6 +23,9 @@
               :min="1"
               @change="handleMaxChange()"
             ></el-input-number>
+            <el-button @click="deleteSlot()" v-if="slotCnt > 1"
+              >删除插槽</el-button
+            >
           </el-form-item>
           <el-form-item class="pos-left" prop="slot">
             <el-transfer
@@ -131,7 +134,6 @@ export default class Stock extends Vue {
     slot: [
       {
         validator: (rules, value, cb) => {
-          console.log(slotCnt, this.form.slots);
           for (let i = 0; i < slotCnt; i++) {
             if (this.form.slots[i].length === 0) {
               cb(new Error("不能有空插槽"));
@@ -166,6 +168,12 @@ export default class Stock extends Vue {
       }
     if (this.curSlot > this.slotCnt) this.curSlot = this.slotCnt;
     slotCnt = this.slotCnt;
+  }
+  deleteSlot() {
+    this.form.slots.splice(this.curSlot - 1, 1);
+    this.slotCnt--;
+    slotCnt--;
+    if (this.curSlot > this.slotCnt) this.curSlot = this.slotCnt;
   }
   async onSubmit() {
     axios.post("/api/stock", qs.stringify(this.form));
